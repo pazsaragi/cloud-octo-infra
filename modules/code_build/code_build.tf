@@ -23,6 +23,11 @@ resource "aws_codebuild_project" "codebuild_project_terraform_plan" {
       name  = "TERRAFORM_VERSION"
       value = "1.0.11"
     }
+
+    environment_variable {
+      name  = "SPEC"
+      value = "./build_spec/tf_plan_build_spec.yml"
+    }
   }
 
   source {

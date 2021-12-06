@@ -19,3 +19,7 @@ variable "codebuild_terraform_plan_name" {
 variable "codebuild_terraform_apply_name" {
   description = "Terraform apply codebuild project name"
 }
+
+variable "codebuild_terraform_security_name" {
+  description = "Terraform security codebuild project name"
+}

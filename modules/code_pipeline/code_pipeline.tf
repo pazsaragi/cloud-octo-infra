@@ -198,7 +198,7 @@ resource "aws_codepipeline" "tf_codepipeline" {
   }
 
   stage {
-    name             = "Source"
+    name = "Source"
     action {
       name             = "Source"
       category         = "Source"
@@ -212,7 +212,7 @@ resource "aws_codepipeline" "tf_codepipeline" {
         BranchName     = "master"
       }
     }
-    
+
   }
 
   stage {
@@ -228,6 +228,23 @@ resource "aws_codepipeline" "tf_codepipeline" {
 
       configuration = {
         ProjectName = var.codebuild_terraform_plan_name
+      }
+    }
+  }
+
+  stage {
+    name = "Terraform_Security"
+
+    action {
+      name            = "Terraform-Security"
+      category        = "Build"
+      owner           = "AWS"
+      provider        = "CodeBuild"
+      input_artifacts = ["SourceArtifact"]
+      version         = "1"
+
+      configuration = {
+        ProjectName = var.codebuild_terraform_security_name
       }
     }
   }

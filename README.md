@@ -1,6 +1,5 @@
 # Infra Repo
 
-
 * Frontend -> nextjs
 * App Layer -> Django or FastAPI? -> ECS, ECR, ALB
 * Database -> Postgres, DynamoDB, CosmosDB?

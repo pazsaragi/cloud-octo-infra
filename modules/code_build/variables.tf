@@ -4,6 +4,9 @@ variable "codebuild_project_terraform_plan_name" {
 variable "codebuild_project_terraform_apply_name" {
   description = "Name for CodeBuild Terraform Apply Project"
 }
+variable "codebuild_terraform_security_name" {
+  description = "Name for CodeBuild Terraform Security Project"
+}
 variable "s3_logging_bucket_id" {
   description = "ID of the S3 bucket for access logging"
 }

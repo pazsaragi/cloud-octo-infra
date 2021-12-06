@@ -26,13 +26,13 @@ resource "aws_codebuild_project" "codebuild_project_terraform_plan" {
 
     environment_variable {
       name  = "SPEC"
-      value = "./build_spec/tf_plan_build_spec.yml"
+      value = "./build_spec/tf_plan.yml"
     }
   }
 
   source {
     type      = "CODEPIPELINE"
-    buildspec = "./build_spec/tf_plan_build_spec.yml"
+    buildspec = "./build_spec/tf_plan.yml"
   }
 
 logs_config {
@@ -99,7 +99,7 @@ resource "aws_codebuild_project" "codebuild_project_terraform_apply" {
 
   source {
     type      = "CODEPIPELINE"
-    buildspec = "./build_spec/tf_apply_build_spec.yml"
+    buildspec = "./build_spec/tf_apply.yml"
   }
 
   tags = {

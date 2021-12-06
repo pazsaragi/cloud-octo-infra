@@ -122,8 +122,8 @@ resource "aws_iam_role_policy" "codebuild_iam_role_policy" {
         "${aws_s3_bucket.s3_logging_bucket.arn}/*",
         "${aws_s3_bucket.state_bucket.arn}",
         "${aws_s3_bucket.state_bucket.arn}/*",
-        "arn:aws:s3:::codepipeline-us-east-1*",
-        "arn:aws:s3:::codepipeline-us-east-1*/*",
+        "arn:aws:s3:::codepipeline-eu-west-2*",
+        "arn:aws:s3:::codepipeline-eu-west-2*/*",
         "${var.tf_codepipeline_artifact_bucket_arn}",
         "${var.tf_codepipeline_artifact_bucket_arn}/*"
       ]

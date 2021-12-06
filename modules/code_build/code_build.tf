@@ -27,7 +27,7 @@ resource "aws_codebuild_project" "codebuild_project_terraform_plan" {
 
   source {
     type      = "CODEPIPELINE"
-    buildspec = "./build_spec/tf_apply_build_spec.yml"
+    buildspec = "./build_spec/tf_plan_build_spec.yml"
   }
 
 logs_config {
@@ -94,7 +94,7 @@ resource "aws_codebuild_project" "codebuild_project_terraform_apply" {
 
   source {
     type      = "CODEPIPELINE"
-    buildspec = "./build_spec/tf_plan_build_spec.yml"
+    buildspec = "./build_spec/tf_apply_build_spec.yml"
   }
 
   tags = {

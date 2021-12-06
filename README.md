@@ -2,8 +2,8 @@
 
 
 * Frontend -> nextjs
-* Backend -> Django or FastAPI?
-* Database -> Postgres
+* App Layer -> Django or FastAPI? -> ECS, ECR, ALB
+* Database -> Postgres, DynamoDB, CosmosDB?
 * VSC -> Git -> CodeCommit
 * CI -> CodeBuild, CodePipeline
 * CD -> CodeDeploy

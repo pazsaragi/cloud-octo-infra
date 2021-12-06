@@ -6,11 +6,24 @@ terraform {
     }
   }
 
+  backend "s3" {
+    bucket = "cloud-octo-codebuild-terraform-tfstate"
+    key    = "terraform.tfstate"
+    region = "eu-west-2"
+    dynamodb_table = "codebuild-dynamodb-terraform-locking"
+    encrypt = true
+  }
+
   required_version = ">= 0.14.9"
 }
 
 provider "aws" {
   region  = "eu-west-2"
+
+  assume_role {
+    role_arn = "arn:aws:iam::355348644063:role/TerraformAssumedIamRole"
+    session_name = "terraform"
+  }
 }
 
 ## S3 State

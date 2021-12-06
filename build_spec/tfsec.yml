@@ -1,0 +1,15 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      alpine: 3.12
+    commands:
+      - TFSEC_VERSION=v0.58.6
+      - wget https://github.com/aquasecurity/tfsec/releases/download/${TFSEC_VERSION}/tfsec-linux-amd64
+      - chmod +x ./tfsec
+      - mv ./tfsec /usr/local/bin/tfsec
+  build:
+    commands:
+      - tfsec --version
+      - tfsec .

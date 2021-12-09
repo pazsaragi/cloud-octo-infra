@@ -3,7 +3,7 @@
     "name": "apigateway",
     "image": "${docker_image_url_django}:${tag}",
     "essential": true,
-    "cpu": 1,
+    "cpu": 256,
     "memory": 512,
     "mountPoints": [],
     "links": [],

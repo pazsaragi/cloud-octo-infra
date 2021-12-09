@@ -27,7 +27,7 @@ variable "cpu" {
 }
 
 variable "memory" {
-  default = 256
+  default = 512
 }
 
 variable "desired_count" {

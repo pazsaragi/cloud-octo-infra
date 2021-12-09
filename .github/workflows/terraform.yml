@@ -42,6 +42,34 @@ jobs:
         run: terraform plan -no-color
         continue-on-error: true
 
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      
+      - name: Install Poetry
+        uses: Gr1N/setup-poetry@v7
+        
+      - name: Load cached venv
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pypoetry/virtualenvs
+          key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --no-root
+
+      - name: Run Security Check
+        run: poetry run checkov --soft-fail -d .
+
+      - name: Run Compliance Check
+        run: |
+          echo "creating terraform plan"
+          terraform init && terraform plan -out=compliance_plan.out && terraform show -json compliance_plan.out > compliance_plan.json
+          echo "running terraform compliance"
+          poetry run terraform-compliance -f features/ -p compliance_plan.out -n
+
       - uses: actions/github-script@0.9.0
         if: github.event_name == 'pull_request'
         env:

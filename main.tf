@@ -27,8 +27,8 @@ module "apigateway" {
   container_defition_location = "templates/apigateway.tpl"
   ecr_repository_url          = ""
   container_name              = "apigateway"
-  public_subnet_ids                  = module.vpc.public_subnet_ids
-  private_subnet_ids                  = module.vpc.private_subnet_ids
+  public_subnet_ids           = module.vpc.public_subnet_ids
+  private_subnet_ids          = module.vpc.private_subnet_ids
 }
 
 ## Repo

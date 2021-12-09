@@ -16,3 +16,19 @@ variable "s3_logging_bucket" {
 variable "codebuild_iam_role_arn" {
   description = "ARN of the CodeBuild IAM role"
 }
+variable "codebuild_iam_role_name" {
+  description = "Name for IAM Role utilized by CodeBuild"
+}
+variable "codebuild_iam_role_policy_name" {
+  description = "Name for IAM policy used by CodeBuild"
+}
+variable "terraform_codecommit_repo_arn" {
+  description = "Terraform CodeCommit git repo ARN"
+}
+variable "tf_codepipeline_artifact_bucket_arn" {
+  description = "Codepipeline artifact bucket ARN"
+}
+
+variable "s3_logging_bucket_name" {
+  description = "Name of S3 bucket to use for access logging"
+}

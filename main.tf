@@ -12,7 +12,6 @@ module "state" {
 # VPC
 module "vpc" {
   source = "./modules/vpc"
-  name   = "cloud-octo"
 }
 
 ## Repo

@@ -3,8 +3,8 @@ data "aws_availability_zones" "available_zones" {
 }
 
 resource "aws_vpc" "main" {
-  cidr_block           = var.cidr
-  name = var.name
+  cidr_block = var.cidr
+  name       = var.name
 }
 
 resource "aws_subnet" "public-subnet-1" {

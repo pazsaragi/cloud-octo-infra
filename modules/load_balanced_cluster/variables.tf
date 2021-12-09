@@ -1,3 +1,7 @@
+variable "vpc_id" {
+
+}
+
 variable "ecs_cluster_name" {
   description = "Name of the ecs cluster"
 }
@@ -64,8 +68,14 @@ variable "asg_min" {
 #   type = list(any)
 # }
 
-variable "subnet_ids" {
-  description = "list of subnet ids"
+variable "public_subnet_ids" {
+  description = "list of public subnet ids"
+  type        = list(string)
+  default     = null
+}
+
+variable "private_subnet_ids" {
+  description = "list of private subnet ids"
   type        = list(string)
   default     = null
 }

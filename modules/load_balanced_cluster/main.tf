@@ -66,9 +66,7 @@ resource "aws_ecs_service" "service" {
 
   network_configuration {
     security_groups = [aws_security_group.ecs.id]
-    subnets = [
-      aws_subnet.private-subnet-1.id, aws_subnet.private-subnet-2.id
-    ]
+    subnets = var.private_subnet_ids
   }
 
   load_balancer {

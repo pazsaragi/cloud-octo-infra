@@ -21,12 +21,14 @@ module "vpc" {
 
 # Apigateway
 module "apigateway" {
+  vpc_id                      = module.vpc.vpc_id
   source                      = "./modules/load_balanced_cluster"
   ecs_cluster_name            = "apigateway"
   container_defition_location = "templates/apigateway.tpl"
   ecr_repository_url          = ""
   container_name              = "apigateway"
-  subnet_ids                  = module.vpc.outputs.subnet_ids
+  public_subnet_ids                  = module.vpc.public_subnet_ids
+  private_subnet_ids                  = module.vpc.private_subnet_ids
 }
 
 ## Repo

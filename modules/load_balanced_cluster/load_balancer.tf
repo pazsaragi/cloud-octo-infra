@@ -3,7 +3,7 @@ resource "aws_lb" "lb" {
   name               = "${var.ecs_cluster_name}-alb"
   load_balancer_type = "application"
   security_groups    = [aws_security_group.load-balancer.id]
-  subnets            = var.subnet_ids
+  subnets            = var.public_subnet_ids
 }
 
 resource "aws_alb_target_group" "default" {

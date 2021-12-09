@@ -9,6 +9,12 @@ module "state" {
   dynamo_db_table_name = "cloud-octo-lock"
 }
 
+# VPC
+module "vpc" {
+  source = "./modules/vpc"
+  name = "cloud-octo"
+}
+
 ## Repo
 # module "codecommit" {
 #   source          = "./modules/code_commit"

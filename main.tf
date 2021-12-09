@@ -4,9 +4,9 @@ provider "aws" {
 
 ## S3 State
 module "state" {
-  source                              = "./modules/state"
-  s3_tfstate_bucket                   = "cloud-octo-tfstate"
-  dynamo_db_table_name                = "cloud-octo-lock"
+  source               = "./modules/state"
+  s3_tfstate_bucket    = "cloud-octo-tfstate"
+  dynamo_db_table_name = "cloud-octo-lock"
 }
 
 ## Repo

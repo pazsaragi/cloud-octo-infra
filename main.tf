@@ -22,7 +22,7 @@ module "vpc" {
 # ECR
 module "ecr" {
   source = "./modules/ecr"
-  name = "cloud-octo"
+  name   = "cloud-octo"
 }
 
 # Apigateway

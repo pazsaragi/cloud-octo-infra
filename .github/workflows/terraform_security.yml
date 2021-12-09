@@ -33,10 +33,12 @@ jobs:
       - name: Run Security Check
         run: poetry run checkov --soft-fail -d .
 
-      - name: Run Compliance Check
+      - name: Install terraform
         uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 0.14.x
+
+      - name: Run Compliance Check
         run: |
           echo "creating terraform plan"
           terraform init && terraform plan -out=compliance_plan.out && terraform show -json compliance_plan.out > compliance_plan.json

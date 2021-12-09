@@ -3,7 +3,7 @@ resource "aws_ecr_repository" "repo" {
 }
 
 resource "aws_ecr_lifecycle_policy" "policy" {
-  repository = aws_ecr_repository.production.name
+  repository = aws_ecr_repository.repo.name
 
   policy = <<EOF
         {

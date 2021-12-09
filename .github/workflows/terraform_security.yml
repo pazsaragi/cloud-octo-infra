@@ -31,4 +31,14 @@ jobs:
         run: poetry install --no-interaction --no-root
 
       - name: Run Security Check
-        run: poetry run checkov --soft-fail -d . 
+        run: poetry run checkov --soft-fail -d .
+
+      - name: Run Compliance Check
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.14.x
+        run: |
+          echo "creating terraform plan"
+          terraform init && terraform plan -out=compliance_plan.out && terraform show -json compliance_plan.out > compliance_plan.json
+          echo "running terraform compliance"
+          poetry run terraform-compliance -f features/ -p compliance_plan.out -n

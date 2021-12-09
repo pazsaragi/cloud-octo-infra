@@ -18,7 +18,7 @@ resource "aws_ecs_task_definition" "app" {
   family                   = var.container_name
   cpu                      = var.cpu
   memory                   = var.memory
-  execution_role_arn       = var.ecs_task_execution_role_arn
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   container_definitions    = data.template_file.app.rendered
   # container_definitions = jsonencode(
   #   [
@@ -66,13 +66,11 @@ resource "aws_ecs_service" "service" {
 
   network_configuration {
     security_groups = [aws_security_group.ecs.id]
-    subnets = [
-      aws_subnet.private-subnet-1.id, aws_subnet.private-subnet-2.id
-    ]
+    subnets         = var.private_subnet_ids
   }
 
   load_balancer {
-    target_group_arn = var.tg_arn
+    target_group_arn = aws_alb_target_group.default.arn
     container_name   = var.container_name
     container_port   = var.container_port
   }

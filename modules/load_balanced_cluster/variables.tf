@@ -1,3 +1,7 @@
+variable "vpc_id" {
+
+}
+
 variable "ecs_cluster_name" {
   description = "Name of the ecs cluster"
 }
@@ -26,17 +30,9 @@ variable "memory" {
   default = 256
 }
 
-variable "ecs_task_execution_role_arn" {
-  description = "Role arn for ecs task execution role"
-}
-
 variable "desired_count" {
   default     = 1
   description = "Default desired task def count"
-}
-
-variable "tg_arn" {
-  description = "ARN of target group of load balancer attached to ECS Service"
 }
 
 variable "container_port" {
@@ -72,8 +68,14 @@ variable "asg_min" {
 #   type = list(any)
 # }
 
-variable "subnet_ids" {
-  description = "list of subnet ids"
+variable "public_subnet_ids" {
+  description = "list of public subnet ids"
+  type        = list(string)
+  default     = null
+}
+
+variable "private_subnet_ids" {
+  description = "list of private subnet ids"
   type        = list(string)
   default     = null
 }

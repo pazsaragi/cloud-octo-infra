@@ -32,4 +32,4 @@ jobs:
         run: poetry install --no-interaction --no-root
 
       - name: Run Security Check
-        run: poetry run checkov -d .
+        run: poetry run checkov --soft-fail -d . 

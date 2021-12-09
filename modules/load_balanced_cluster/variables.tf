@@ -26,17 +26,9 @@ variable "memory" {
   default = 256
 }
 
-variable "ecs_task_execution_role_arn" {
-  description = "Role arn for ecs task execution role"
-}
-
 variable "desired_count" {
   default     = 1
   description = "Default desired task def count"
-}
-
-variable "tg_arn" {
-  description = "ARN of target group of load balancer attached to ECS Service"
 }
 
 variable "container_port" {

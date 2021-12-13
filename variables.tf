@@ -9,3 +9,7 @@ variable "rds_password" {
 variable "apigateway_secret" {
   description = "The API Gateway Secret"
 }
+
+variable "db_name" {
+  description = "The name of the database"
+}

@@ -54,7 +54,7 @@ resource "aws_security_group" "rds" {
 # Apigateway DB
 module "apigateway_rds" {
   source            = "./modules/rds"
-  rds_db_name       = "cloud-octo-dev"
+  rds_db_name       = var.db_name
   rds_username      = var.rds_username
   rds_password      = var.rds_password
   vpc_id            = module.vpc.vpc_id

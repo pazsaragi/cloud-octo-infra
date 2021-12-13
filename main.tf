@@ -31,18 +31,65 @@ module "apigateway_logs" {
   name   = "cloud-octo-logs"
 }
 
+resource "aws_security_group" "rds" {
+  name        = "rds-security-group"
+  description = "Allows outbound access only"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress {
+    protocol        = "tcp"
+    from_port       = "5432"
+    to_port         = "5432"
+    security_groups = [module.apigateway.ecs_security_group_id]
+  }
+
+  egress {
+    protocol    = "-1"
+    from_port   = 0
+    to_port     = 0
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# Apigateway DB
+module "apigateway_rds" {
+  source            = "./modules/rds"
+  rds_db_name       = "cloud-octo-dev"
+  rds_username      = var.rds_username
+  rds_password      = var.rds_password
+  vpc_id            = module.vpc.vpc_id
+  subnet_ids        = [module.vpc.private_subnet_ids]
+  security_group_id = aws_security_group.rds.id
+}
+
+data "template_file" "apigateway" {
+  template = file("templates/apigateway.tpl")
+
+  vars = {
+    docker_image_url_django = module.ecr.repository_url
+    region                  = "eu-west-2"
+    tag                     = "latest"
+    log_group_name          = module.apigateway_logs.log_group_name
+    log_stream_name         = module.apigateway_logs.log_stream_name
+    db_name                 = module.apigateway_rds.rds_db_name
+    db_username             = var.rds_username
+    db_password             = var.rds_password
+    db_host                 = module.apigateway_rds.rds_host
+    db_port                 = module.apigateway_rds.rds_port
+    order_queue_url         = "localhost"
+    secret_squirrel_url     = var.apigateway_secret
+  }
+}
+
 # Apigateway
 module "apigateway" {
-  vpc_id                      = module.vpc.vpc_id
-  source                      = "./modules/load_balanced_cluster"
-  ecs_cluster_name            = "apigateway"
-  container_defition_location = "templates/apigateway.tpl"
-  ecr_repository_url          = module.ecr.repository_url
-  container_name              = "apigateway"
-  public_subnet_ids           = module.vpc.public_subnet_ids
-  private_subnet_ids          = module.vpc.private_subnet_ids
-  log_group_name              = module.apigateway_logs.log_group_name
-  log_stream_name             = module.apigateway_logs.log_stream_name
+  vpc_id             = module.vpc.vpc_id
+  source             = "./modules/load_balanced_cluster"
+  ecs_cluster_name   = "apigateway"
+  container_name     = "apigateway"
+  public_subnet_ids  = module.vpc.public_subnet_ids
+  private_subnet_ids = module.vpc.private_subnet_ids
+  template_file      = data.template_file.apigateway.rendered
 }
 
 ## Repo

@@ -1,17 +1,8 @@
 variable "vpc_id" {
-
 }
 
 variable "ecs_cluster_name" {
   description = "Name of the ecs cluster"
-}
-
-variable "container_defition_location" {
-  description = "Relative path to container definition e.g. 'templates/django_app.json.tpl"
-}
-
-variable "ecr_repository_url" {
-  description = "URL of ECR repository"
 }
 
 variable "region" {
@@ -84,8 +75,4 @@ variable "health_check_path" {
   default = "/health"
 }
 
-variable "log_group_name" {
-}
-
-variable "log_stream_name" {
-}
+variable "template_file" {}

@@ -2,18 +2,6 @@ resource "aws_ecs_cluster" "cluster" {
   name = var.ecs_cluster_name
 }
 
-data "template_file" "app" {
-  template = file(var.container_defition_location)
-
-  vars = {
-    docker_image_url_django = var.ecr_repository_url
-    region                  = var.region
-    tag                     = "latest"
-    log_group_name          = var.log_group_name
-    log_stream_name         = var.log_stream_name
-  }
-}
-
 resource "aws_ecs_task_definition" "app" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
@@ -21,7 +9,7 @@ resource "aws_ecs_task_definition" "app" {
   cpu                      = var.cpu
   memory                   = var.memory
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
-  container_definitions    = data.template_file.app.rendered
+  container_definitions    = var.template_file
   # container_definitions = jsonencode(
   #   [
   #     for container in local.containers :

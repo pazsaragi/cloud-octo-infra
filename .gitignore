@@ -4,3 +4,5 @@ terraform.tfstate*
 .terraform.lock*
 *.secret
 compliance_plan.*
+
+.env*

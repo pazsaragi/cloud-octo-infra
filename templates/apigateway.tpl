@@ -14,7 +14,40 @@
       }
     ],
     "command": ["gunicorn", "-w", "3", "-b", ":80", "apig.wsgi:application"],
-    "environment": [],
+    "environment": [
+      {
+        "name": "SECRET_KEY",
+        "value": "${secret_squirrel}"
+      },
+      {
+        "name": "DB_NAME",
+        "value": "${db_name}"
+      },
+      {
+        "name": "DB_USER",
+        "value": "${db_user}"
+      },
+      {
+        "name": "DB_PASSWORD",
+        "value": "${db_password}"
+      },
+      {
+        "name": "DB_HOST",
+        "value": "${db_host}"
+      },
+      {
+        "name": "DB_PORT",
+        "value": "${db_port}"
+      },
+      {
+        "name": "PROTECTED_ROUTES",
+        "value": "['order']"
+      },
+      {
+        "name": "ORDER_QUEUE_URL",
+        "value": "${order_queue_url}"
+      }
+    ],
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {

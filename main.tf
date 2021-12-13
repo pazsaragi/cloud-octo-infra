@@ -58,7 +58,7 @@ module "apigateway_rds" {
   rds_username      = var.rds_username
   rds_password      = var.rds_password
   vpc_id            = module.vpc.vpc_id
-  subnet_ids        = [module.vpc.private_subnet_ids]
+  subnet_ids        = module.vpc.private_subnet_ids
   security_group_id = aws_security_group.rds.id
 }
 

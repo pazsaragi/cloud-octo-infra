@@ -41,6 +41,8 @@ module "apigateway" {
   container_name              = "apigateway"
   public_subnet_ids           = module.vpc.public_subnet_ids
   private_subnet_ids          = module.vpc.private_subnet_ids
+  log_group_name              = module.apigateway_logs.log_group_name
+  log_stream_name             = module.apigateway_logs.log_stream_name
 }
 
 ## Repo

@@ -9,6 +9,8 @@ data "template_file" "app" {
     docker_image_url_django = var.ecr_repository_url
     region                  = var.region
     tag                     = "latest"
+    log_group_name          = var.log_group_name
+    log_stream_name         = var.log_stream_name
   }
 }
 

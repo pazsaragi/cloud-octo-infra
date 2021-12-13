@@ -25,6 +25,12 @@ module "ecr" {
   name   = "cloud-octo"
 }
 
+# Apigateway Logs
+module "apigateway_logs" {
+  source = "./modules/logs"
+  name   = "cloud-octo-logs"
+}
+
 # Apigateway
 module "apigateway" {
   vpc_id                      = module.vpc.vpc_id

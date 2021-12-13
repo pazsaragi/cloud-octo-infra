@@ -18,9 +18,9 @@
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-        "awslogs-group": "/ecs/apigateway",
+        "awslogs-group": "${log_group_name}",
         "awslogs-region": "${region}",
-        "awslogs-stream-prefix": "apigateway-log-stream"
+        "awslogs-stream-prefix": "${log_stream_name}"
       }
     },
     "volumesFrom": []

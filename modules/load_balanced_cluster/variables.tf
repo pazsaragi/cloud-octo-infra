@@ -83,3 +83,9 @@ variable "private_subnet_ids" {
 variable "health_check_path" {
   default = "/health"
 }
+
+variable "log_group_name" {
+}
+
+variable "log_stream_name" {
+}

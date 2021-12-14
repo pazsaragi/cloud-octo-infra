@@ -6,3 +6,5 @@ terraform.tfstate*
 compliance_plan.*
 
 .env*
+
+bastion_id*

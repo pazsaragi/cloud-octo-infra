@@ -77,7 +77,9 @@ data "template_file" "apigateway" {
     db_host                 = module.apigateway_rds.rds_host
     db_port                 = module.apigateway_rds.rds_port
     order_queue_url         = "localhost"
-    secret_squirrel_url     = var.apigateway_secret
+    apigateway_secret       = var.apigateway_secret
+    debug                   = var.debug
+    allowed_hosts           = var.allowed_hosts
   }
 }
 
@@ -91,6 +93,40 @@ module "apigateway" {
   private_subnet_ids = module.vpc.private_subnet_ids
   template_file      = data.template_file.apigateway.rendered
 }
+
+module "bastion_migrator" {
+  source     = "./modules/bastion"
+  key_name   = "bastion-key"
+  public_key = var.public_key
+  vpc_id     = module.vpc.vpc_id
+}
+
+# resource "aws_iam_role" "rds_migration_role" {
+#   name = "rds_migratior"
+
+#   assume_role_policy = <<EOF
+# {
+#   "Version": "2012-10-17",
+#   "Statement": [
+#     {
+#       "Action": "sts:AssumeRole",
+#       "Principal": {
+#         "Service": "lambda.amazonaws.com"
+#       },
+#       "Effect": "Allow",
+#       "Sid": ""
+#     }
+#   ]
+# }
+# EOF
+# }
+
+# # RDS migrator lambda
+# module "rds_migrator" {
+#   source = "./modules/lambda"
+#   name   = "cloud-octo-rds-migrator"
+#   role_arn = aws_iam_role.rds_migration_role.arn
+# }
 
 ## Repo
 # module "codecommit" {

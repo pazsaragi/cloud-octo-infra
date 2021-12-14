@@ -17,7 +17,7 @@
     "environment": [
       {
         "name": "SECRET_KEY",
-        "value": "${secret_squirrel}"
+        "value": "${apigateway_secret}"
       },
       {
         "name": "DB_NAME",
@@ -25,7 +25,7 @@
       },
       {
         "name": "DB_USER",
-        "value": "${db_user}"
+        "value": "${db_username}"
       },
       {
         "name": "DB_PASSWORD",
@@ -41,11 +41,19 @@
       },
       {
         "name": "PROTECTED_ROUTES",
-        "value": "['order']"
+        "value": '["order"]'
       },
       {
         "name": "ORDER_QUEUE_URL",
         "value": "${order_queue_url}"
+      },
+      {
+        "name": "DEBUG",
+        "value": "${debug}"
+      },
+      {
+        "name": "ALLOWED_HOSTS",
+        "value": "${allowed_hosts}"
       }
     ],
     "logConfiguration": {

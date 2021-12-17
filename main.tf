@@ -84,10 +84,10 @@ resource "aws_dynamodb_table" "auth_table" {
     projection_type = "ALL"
   }
 
-  ttl {
-    attribute_name = "TimeToExist"
-    enabled        = false
-  }
+  # ttl {
+  #   attribute_name = "TimeToExist"
+  #   enabled        = false
+  # }
 
 }
 # module "apigateway_rds" {

@@ -31,55 +31,87 @@ module "apigateway_logs" {
   name   = "cloud-octo-logs"
 }
 
-resource "aws_security_group" "rds" {
-  name        = "rds-security-group"
-  description = "Allows outbound access only"
-  vpc_id      = module.vpc.vpc_id
+# resource "aws_security_group" "rds" {
+#   name        = "rds-security-group"
+#   description = "Allows outbound access only"
+#   vpc_id      = module.vpc.vpc_id
 
-  ingress {
-    protocol        = "tcp"
-    from_port       = "5432"
-    to_port         = "5432"
-    security_groups = [module.apigateway.ecs_security_group_id]
+#   ingress {
+#     protocol        = "tcp"
+#     from_port       = "5432"
+#     to_port         = "5432"
+#     security_groups = [module.apigateway.ecs_security_group_id, module.bastion_migrator.security_group_id]
+#   }
+
+#   egress {
+#     protocol    = "-1"
+#     from_port   = 0
+#     to_port     = 0
+#     cidr_blocks = ["0.0.0.0/0"]
+#   }
+# }
+
+# # Apigateway DB
+resource "aws_dynamodb_table" "auth_table" {
+  name           = var.auth_db_name
+  billing_mode   = "PAY_PER_REQUEST"
+  read_capacity  = 10
+  write_capacity = 10
+  hash_key       = "pk"
+  range_key      = "sk"
+
+  attribute {
+    name = "pk"
+    type = "S"
   }
 
-  egress {
-    protocol    = "-1"
-    from_port   = 0
-    to_port     = 0
-    cidr_blocks = ["0.0.0.0/0"]
+  attribute {
+    name = "sk"
+    type = "S"
   }
-}
 
-# Apigateway DB
-module "apigateway_rds" {
-  source            = "./modules/rds"
-  rds_db_name       = var.db_name
-  rds_username      = var.rds_username
-  rds_password      = var.rds_password
-  vpc_id            = module.vpc.vpc_id
-  subnet_ids        = module.vpc.private_subnet_ids
-  security_group_id = aws_security_group.rds.id
+  attribute {
+    name = "email"
+    type = "S"
+  }
+
+  global_secondary_index {
+    name            = "email-index"
+    hash_key        = "email"
+    range_key       = "pk"
+    write_capacity  = 5
+    read_capacity   = 5
+    projection_type = "ALL"
+  }
+
+  ttl {
+    attribute_name = "TimeToExist"
+    enabled        = false
+  }
+
 }
+# module "apigateway_rds" {
+#   source            = "./modules/rds"
+#   rds_db_name       = var.db_name
+#   rds_username      = var.rds_username
+#   rds_password      = var.rds_password
+#   vpc_id            = module.vpc.vpc_id
+#   subnet_ids        = module.vpc.private_subnet_ids
+#   security_group_id = aws_security_group.rds.id
+# }
+
 
 data "template_file" "apigateway" {
   template = file("templates/apigateway.tpl")
 
   vars = {
-    docker_image_url_django = module.ecr.repository_url
-    region                  = "eu-west-2"
-    tag                     = "latest"
-    log_group_name          = module.apigateway_logs.log_group_name
-    log_stream_name         = module.apigateway_logs.log_stream_name
-    db_name                 = module.apigateway_rds.rds_db_name
-    db_username             = var.rds_username
-    db_password             = var.rds_password
-    db_host                 = module.apigateway_rds.rds_host
-    db_port                 = module.apigateway_rds.rds_port
-    order_queue_url         = "localhost"
-    apigateway_secret       = var.apigateway_secret
-    debug                   = var.debug
-    allowed_hosts           = var.allowed_hosts
+    docker_image_url  = module.ecr.repository_url
+    region            = "eu-west-2"
+    tag               = "latest"
+    log_group_name    = module.apigateway_logs.log_group_name
+    log_stream_name   = module.apigateway_logs.log_stream_name
+    apigateway_secret = var.apigateway_secret
+    allowed_hosts     = var.allowed_hosts
   }
 }
 
@@ -92,14 +124,16 @@ module "apigateway" {
   public_subnet_ids  = module.vpc.public_subnet_ids
   private_subnet_ids = module.vpc.private_subnet_ids
   template_file      = data.template_file.apigateway.rendered
+  capacity_provider  = "FARGATE_SPOT"
 }
 
-module "bastion_migrator" {
-  source     = "./modules/bastion"
-  key_name   = "bastion-key"
-  public_key = var.public_key
-  vpc_id     = module.vpc.vpc_id
-}
+# module "bastion_migrator" {
+#   source     = "./modules/bastion"
+#   key_name   = "bastion-key"
+#   public_key = var.bastion_key
+#   vpc_id     = module.vpc.vpc_id
+#   subnet_id  = module.vpc.public_subnet_ids[0]
+# }
 
 # resource "aws_iam_role" "rds_migration_role" {
 #   name = "rds_migratior"

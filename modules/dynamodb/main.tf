@@ -5,8 +5,6 @@ resource "aws_dynamodb_table" "table" {
   write_capacity = var.wcus
   hash_key       = var.hash_key
   range_key      = var.range_key
-  count          = length(var.attributes)
-  attribute      = var.attributes[count.index]
 
   attribute {
     name = var.hash_key
@@ -18,9 +16,13 @@ resource "aws_dynamodb_table" "table" {
     type = "S"
   }
 
-  attribute {
-    name = var.attribute_name
-    type = var.attribute_type
+  global_secondary_index {
+    name            = var.gsi.name
+    hash_key        = var.gsi.hash_key
+    range_key       = var.gsi.range_key
+    write_capacity  = var.gsi.write_capacity
+    read_capacity   = var.gsi.read_capacity
+    projection_type = var.gsi.projection_type
   }
 
   ttl {
@@ -43,33 +45,28 @@ variable "billing_mode" {
 
 variable "rcus" {
   description = "The read capacity units of the DynamoDB table"
-  type        = "number"
+  type        = number
   default     = 20
 }
 
 variable "wcus" {
   description = "The write capacity units of the DynamoDB table"
-  type        = "number"
+  type        = number
   default     = 20
 }
 
 variable "hash_key" {
   description = "The hash key of the DynamoDB table"
   type        = string
-  default     = "id"
+  default     = "pk"
 }
 
 variable "range_key" {
   description = "The range key of the DynamoDB table"
   type        = string
-  default     = "name"
+  default     = "sk"
 }
 
-variable "attributes" {
-  description = "The attributes of the DynamoDB table"
-  type = list(object({
-    attribute_name : string,
-    attribute_type : string,
-  }))
+variable "gsi" {
+  description = "The global secondary index of the DynamoDB table"
 }
-

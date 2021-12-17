@@ -76,3 +76,7 @@ variable "health_check_path" {
 }
 
 variable "template_file" {}
+
+variable "capacity_provider" {
+  default = "FARGATE"
+}

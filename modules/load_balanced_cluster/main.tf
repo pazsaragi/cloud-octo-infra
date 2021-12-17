@@ -1,5 +1,9 @@
 resource "aws_ecs_cluster" "cluster" {
-  name = var.ecs_cluster_name
+  name               = var.ecs_cluster_name
+  capacity_providers = ["FARGATE_SPOT", "FARGATE"]
+  default_capacity_provider_strategy {
+    capacity_provider = var.capacity_provider
+  }
 }
 
 resource "aws_ecs_task_definition" "app" {

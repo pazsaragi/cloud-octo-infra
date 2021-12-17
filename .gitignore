@@ -8,3 +8,5 @@ compliance_plan.*
 .env*
 
 bastion_id*
+
+environment/*
